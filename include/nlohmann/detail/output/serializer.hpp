@@ -684,13 +684,19 @@ class serializer
     }
 
     // templates to avoid warnings about useless casts
-    template <typename NumberType, enable_if_t<std::is_signed<NumberType>::value, int> = 0>
+    template < typename NumberType, enable_if_t<
+                    std::is_same<NumberType, number_integer_t>::value ||
+                    std::is_signed<NumberType>::value,
+                    int> = 1>
     bool is_negative_number(NumberType x)
     {
         return x < 0;
     }
 
-    template < typename NumberType, enable_if_t <std::is_unsigned<NumberType>::value, int > = 0 >
+    template < typename NumberType, enable_if_t <
+                    std::is_same<NumberType, number_unsigned_t>::value ||
+                    std::is_unsigned<NumberType>::value,
+                    int > = 1 >
     bool is_negative_number(NumberType /*unused*/)
     {
         return false;
